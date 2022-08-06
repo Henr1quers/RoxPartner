@@ -190,7 +190,7 @@ CONSTRAINT FK_SalesOrderDetail_SpecialOfferProduct_SpecialOfferIDProductID FOREI
 )
 ~~~~
 
-<p>Para o armazenamento dos arquivos CSV foi utilizado Azure Blob Storage, para fazer as impotações dos dados para suas respectivas tabelas. Para fazer a importação dos dados para as tabelas foram criadas tarefas de pipeline, para que copiasse os dados dos arquivos e importasse para tabelas temporárias com os seguintes nomes: </p>
+<p>Para o armazenamento dos arquivos CSV foi utilizado Azure Blob Storage. Para fazer a importação dos dados para as tabelas foram criadas tarefas de pipeline, para que copiasse os dados dos arquivos e importasse para tabelas temporárias com os seguintes nomes: </p>
 
 <ul>
   <li>Person.StagePerson</li>
@@ -200,3 +200,145 @@ CONSTRAINT FK_SalesOrderDetail_SpecialOfferProduct_SpecialOfferIDProductID FOREI
   <li>Sales.StageSalesOrderHeader</li>
   <li>Sales.StageSalesOrderDetail</li>
 </ul>
+
+![image](https://user-images.githubusercontent.com/92615548/183261445-525d8f42-c295-42a8-832a-4e85d3293015.png)
+
+<p>Após a importação dos dados dos arquivos para as tabelas temporárias, foram criadas procedures para que fosse tratados os dados das mesmas e fosse copiado para a tabela real com os dados devidamente tratados. Abaixo segue script das procedures utilizadas para tratar os dados, copiar para as tebelas reais e excluir as tabelas temporárias.</p>
+
+~~~~
+CREATE OR ALTER     PROCEDURE [dbo].[Proc_Insert_Person] AS
+BEGIN
+	INSERT INTO Person.person
+	SELECT * FROM Person.StagePerson;
+
+	DROP TABLE Person.StagePerson;
+END
+~~~~
+
+~~~~
+create or ALTER   PROCEDURE [dbo].[Proc_Insert_Customer] AS
+BEGIN
+	INSERT INTO Sales.customer
+	SELECT  CustomerID,
+		CASE 
+			WHEN PersonID = 'NULL' THEN null
+			ELSE PersonID END,
+			CASE 
+			WHEN StoreID = 'NULL' THEN null
+			ELSE StoreID END,
+			CASE 
+			WHEN TerritoryID = 'NULL' THEN null
+			ELSE TerritoryID END,
+		AccountNumber,
+		rowguid,
+		ModifiedDate 
+	FROM Sales.StageCustomer
+
+	DROP TABLE Sales.StageCustomer;
+END
+~~~~
+
+~~~~
+create or ALTER     PROCEDURE [dbo].[Proc_Insert_Product] AS
+BEGIN
+	INSERT INTO Production.product
+	SELECT	  ProductID,
+			  Name,
+			  ProductNumber,
+			  CASE WHEN MakeFlag = 'NULL' THEN NULL ELSE MakeFlag END,
+			  CASE WHEN FinishedGoodsFlag = 'NULL' THEN NULL ELSE FinishedGoodsFlag END,
+			  Color,
+			  CASE WHEN SafetyStockLevel = 'NULL' THEN NULL ELSE SafetyStockLevel END,
+			  CASE WHEN ReorderPoint = 'NULL' THEN NULL ELSE ReorderPoint END,
+			  CAST(REPLACE(TRIM(StandardCost),',','.') AS float),
+			  CAST(REPLACE(TRIM(ListPrice),',','.') AS float),
+			  Size,
+			  SizeUnitMeasureCode,
+			  WeightUnitMeasureCode,
+			  case When Weight = 'NULL' THEN null ELSE CAST(REPLACE(TRIM(Weight),',','.') AS float) END,
+			  CASE WHEN DaysToManufacture = 'NULL' THEN NULL ELSE DaysToManufacture END,
+			  ProductLine,
+			  Class,
+			  Style,
+			  CASE WHEN ProductSubcategoryID = 'NULL' THEN NULL ELSE ProductSubcategoryID END,
+			  CASE WHEN ProductModelID = 'NULL' THEN NULL ELSE ProductModelID END,
+			  convert(date,case When SellStartDate = 'NULL' THEN null ELSE SellStartDate  END),
+			  convert(date,case When SellEndDate = 'NULL' THEN null ELSE SellEndDate  END),
+			  convert(date,case When DiscontinuedDate = 'NULL' THEN null ELSE DiscontinuedDate END),
+			  rowguid,
+			  convert(datetime,ModifiedDate)
+  FROM Production.StageProduct
+
+	DROP TABLE Production.StageProduct
+END
+~~~~
+
+~~~~
+create or ALTER PROCEDURE [dbo].[Proc_Insert_SalesOrderDetail] AS
+BEGIN 
+	INSERT INTO Sales.Salesorderdetail
+	SELECT	[SalesOrderID],
+			[SalesOrderDetailID],
+			[CarrierTrackingNumber],
+			[OrderQty],
+			[ProductID],
+			[SpecialOfferID],
+			convert(FLOAT,replace([UnitPrice], ',', '.')),
+			convert(FLOAT,replace([UnitPriceDiscount], ',', '.')),
+			convert(FLOAT,replace([LineTotal], ',', '.')),
+			[rowguid],
+			[ModifiedDate]
+	FROM Sales.StageSalesorderdetail
+
+	DROP TABLE Sales.StageSalesorderdetail
+END
+~~~~
+
+~~~~
+create or ALTER   PROCEDURE [dbo].[Proc_Insert_SalesOrderHeader] AS
+BEGIN 
+	INSERT INTO Sales.salesorderheader
+	SELECT CASE WHEN SalesOrderID = 'NULL' THEN NULL ELSE SalesOrderID END,
+       RevisionNumber,
+       OrderDate,
+       DueDate,
+       ShipDate,
+       Status,
+       OnlineOrderFlag,
+       SalesOrderNumber,
+       PurchaseOrderNumber,
+       AccountNumber,
+       CASE WHEN CustomerID = 'NULL' THEN NULL ELSE CustomerID END,
+       CASE WHEN SalesPersonID = 'NULL' THEN NULL ELSE SalesPersonID END,
+       CASE WHEN TerritoryID = 'NULL' THEN NULL ELSE TerritoryID END,
+       CASE WHEN BillToAddressID = 'NULL' THEN NULL ELSE BillToAddressID END,
+       CASE WHEN ShipToAddressID = 'NULL' THEN NULL ELSE ShipToAddressID END,
+       CASE WHEN ShipMethodID = 'NULL' THEN NULL ELSE ShipMethodID END,
+       CASE WHEN CreditCardID = 'NULL' THEN NULL ELSE CreditCardID END,
+       CreditCardApprovalCode,
+       CASE WHEN CurrencyRateID = 'NULL' THEN NULL ELSE CurrencyRateID END,
+       convert(float,replace(SubTotal, ',', '.')),
+       convert(float,replace(TaxAmt, ',', '.')),
+       convert(float,replace(Freight, ',', '.')),
+       convert(float,replace(TotalDue, ',', '.')),  
+	   Comment,
+	   rowguid,
+       ModifiedDate
+  FROM Sales.StageSalesorderheader
+
+	DROP TABLE Sales.StageSalesorderheader
+END
+~~~~
+
+~~~~
+create or ALTER     PROCEDURE [dbo].[Proc_Insert_SpecialOfferProduct] AS
+BEGIN 
+	INSERT INTO [Sales].[specialofferproduct]
+	SELECT * FROM [Sales].[StageSpecialofferproduct]
+
+	DROP TABLE [Sales].[StageSpecialofferproduct]
+END
+~~~~
+
+
+
