@@ -190,3 +190,13 @@ CONSTRAINT FK_SalesOrderDetail_SpecialOfferProduct_SpecialOfferIDProductID FOREI
 )
 ~~~~
 
+<p>Para o armazenamento dos arquivos CSV foi utilizado Azure Blob Storage, para fazer as impotações dos dados para suas respectivas tabelas. Para fazer a importação dos dados para as tabelas foram criadas tarefas de pipeline, para que copiasse os dados dos arquivos e importasse para tabelas temporárias com os seguintes nomes: </p>
+
+<ul>
+  <li>Person.StagePerson</li>
+   <li>Production.StageProduct</li>
+  <li>Sales.StageCustomer</li>
+  <li>Sales.StageSpecialOfferProduct</li>
+  <li>Sales.StageSalesOrderHeader</li>
+  <li>Sales.StageSalesOrderDetail</li>
+</ul>
