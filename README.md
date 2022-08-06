@@ -341,4 +341,12 @@ END
 ~~~~
 
 
+<p>Depois da criação das procedures foi criado mais uma tarefa de pipeline, para que executasse as procedures para a importação dos dados para as tabelas reais, de forma que a ordem de importação respeitasse as ligações das Primary Key e Foreign Key, como podemos ver na imagem abaixo:</p>
+
+![image](https://user-images.githubusercontent.com/92615548/183261765-4f436f78-bd57-4aa5-a7c4-76644710647e.png)
+
+<p>E por fim foi criado outra tarefa de pipeline para que executasse as outras tarefas automaticamente e na ordem correta. Como podemos abaixo: </p>
+
+![image](https://user-images.githubusercontent.com/92615548/183261849-3ed7d622-70aa-4587-b23a-e0329558ea44.png)
+
 
