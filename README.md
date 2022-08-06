@@ -43,3 +43,150 @@
   </li>
 </ul>
 
+<p>Para a criação dos Schemas e Tabelas foi utilizado os seguintes scripts:</p>
+
+~~~~
+CREATE SCHEMA Person;
+~~~~
+
+~~~~
+CREATE SCHEMA Production;
+~~~~
+
+~~~~
+CREATE SCHEMA Sales;
+~~~~
+
+~~~~
+CREATE TABLE Production.Product
+(
+ProductID INT NOT NULL,
+Name VARCHAR(50),
+ProductNumber VARCHAR(10),
+MakeFlag INT,
+FinishedGoodsFlag INT,
+Color VARCHAR(20),
+SafetyStockLevel INT,
+ReorderPoint INT,
+StandardCost FLOAT(10),
+ListPrice FLOAT(10),
+Size VARCHAR(5),
+SizeUnitMeasureCode VARCHAR(5),
+WeightUnitMeasureCode VARCHAR(10),
+Weight FLOAT(10),
+DaysToManufacture INT,
+ProductLine VARCHAR(5),
+Class VARCHAR(5),
+Style VARCHAR(5),
+ProductSubcategoryID INT,
+ProductModelID INT,
+SellStartDate DATE,
+SellEndDate DATE,
+DiscontinuedDate DATE,
+rowguid VARCHAR(36),
+ModifiedDate DATETIME,
+PRIMARY KEY (ProductID)
+)
+~~~~
+
+~~~~
+CREATE TABLE Person.Person
+(
+BusinessEntityID INT NOT NULL,
+PersonType VARCHAR(4),
+NameStyle INT,
+Title VARCHAR(50),
+FirstName VARCHAR(50),
+MiddleName VARCHAR(50),
+LastName VARCHAR(50),
+Suffix VARCHAR(4),
+EmailPromotion INT,
+AdditionalContactInfo VARCHAR(1700),
+Demographics VARCHAR(700),
+rowguid VARCHAR(36),
+ModifiedDate DATETIME,
+PRIMARY KEY(BusinessEntityID)
+)
+~~~~
+
+~~~~
+CREATE TABLE Sales.Customer
+(
+CustomerID INT NOT NULL,
+PersonID INT,
+StoreID INT,
+TerritoryID INT,
+AccountNumber VARCHAR(20),
+rowguid VARCHAR(36),
+ModifiedDate DATETIME,
+PRIMARY KEY (CustomerID),
+CONSTRAINT FK_Customer_Person_PersonID FOREIGN KEY (PersonID) REFERENCES person.person (BusinessEntityID)
+)
+~~~~
+
+~~~~
+CREATE TABLE Sales.SalesOrderHeader
+(
+SalesOrderID INT NOT NULL,
+RevisionNumber INT,
+OrderDate DATE,
+DueDate DATE,
+ShipDate DATE,
+Status INT,
+OnlineOrderFlag INT,
+SalesOrderNumber VARCHAR(10),
+PurchaseOrderNumber VARCHAR(20),
+AccountNumber VARCHAR(20),
+CustomerID INT,
+SalesPersonID INT,
+TerritoryID INT,
+BillToAddressID INT,
+ShipToAddressID INT,
+ShipMethodID INT,
+CreditCardID INT,
+CreditCardApprovalCode VARCHAR(20),
+CurrencyRateID INT,
+SubTotal FLOAT,
+TaxAmt FLOAT,
+Freight FLOAT,
+TotalDue FLOAT,
+Comment VARCHAR(50),
+rowguid VARCHAR(36),
+ModifiedDate DATETIME,
+PRIMARY KEY (SalesOrderID),
+CONSTRAINT FK_SalesOrderHeader_Customer_CustomerID FOREIGN KEY (CustomerID) REFERENCES Sales.Customer (CustomerID)
+)
+~~~~
+
+~~~~
+CREATE TABLE Sales.SpecialOfferProduct
+(
+SpecialOfferID INT NOT NULL,
+ProductID INT NOT NULL,
+rowguid VARCHAR(36),
+ModifiedDate DATETIME,
+PRIMARY KEY (SpecialOfferID, ProductID),
+CONSTRAINT FK_SpecialOfferProduct_Product_ProductID FOREIGN KEY (ProductID) REFERENCES Production.Product (ProductID)
+)
+~~~~
+
+~~~~
+CREATE TABLE Sales.SalesOrderDetail
+(
+SalesOrderID INT NOT NULL,
+SalesOrderDetailID INT NOT NULL,
+CarrierTrackingNumber VARCHAR(20),
+OrderQty INT,
+ProductID INT,
+SpecialOfferID INT,
+UnitPrice FLOAT,
+UnitPriceDiscount FLOAT,
+LineTotal FLOAT,
+rowguid VARCHAR(36),
+ModifiedDate DATETIME,
+PRIMARY KEY (SalesOrderID, SalesOrderDetailID),
+CONSTRAINT FK_SalesOrderDetail_SalesOrderHeader_SalesOrderID FOREIGN KEY (SalesOrderID) REFERENCES Sales.SalesOrderHeader (SalesOrderID),
+CONSTRAINT FK_SalesOrderDetail_SpecialOfferProduct_SpecialOfferIDProductID FOREIGN KEY (SpecialOfferID,ProductID) REFERENCES Sales.SpecialOfferProduct (SpecialOfferID,ProductID)
+)
+~~~~
+
