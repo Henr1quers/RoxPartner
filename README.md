@@ -17,5 +17,29 @@
 
 ![image](https://user-images.githubusercontent.com/92615548/183257381-1b5cc99c-b3f6-4f2b-8d5d-81fb2625d0ae.png)
 
-<p>Após</p>
+<p>Depois de analisar todos os arquivos CSV para serem importado para o banco de dados, ficou decidido que seria criado um banco de dados com o nome RoxPartner e dentro do mesmo seria criado Schemas e sua tabelas relacionadas, como mostrado a baixo:</p>
+
+<ul>
+  <li>
+    Person (Schema)
+    <ul>
+      <li>Person (Table)</li>
+    </ul>
+  </li>
+  <li>
+    Production (Schema)
+    <ul>
+      <li>Product (Table)</li>
+    </ul>
+  </li>
+  <li>
+    Production (Schema)
+    <ul>
+      <li>Customer (Table)</li>
+      <li>SalesOrderDetail (Table)</li>
+      <li> SalesOrderHeader (Table)</li>
+      <li>SpecialOfferProduct (Table)</li>
+    </ul>
+  </li>
+</ul>
 
