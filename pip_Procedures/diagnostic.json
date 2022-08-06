@@ -1,0 +1,22 @@
+{
+    "now": "2022-08-06T15:31:47.334Z",
+    "perfNow": 67352545.9,
+    "diagnosticCorrelation": "4898e30e-214f-47e9-b3cd-728dc20bcb67",
+    "source": "DownloadSupportFiles",
+    "environment": {
+        "productName": "adf",
+        "buildVersion": "1.0.080322.12",
+        "environmentType": 3,
+        "resourceName": "RoxPartner",
+        "resourceRegion": "brazilsouth",
+        "resourceGroup": "RoxPartner",
+        "subscriptionId": "df17f436-fa0e-4177-a2d1-8dc9a5d7b399",
+        "sessionId": "kEGcc",
+        "operationId": "nBobk",
+        "gitType": "live"
+    },
+    "additionalInfo": {
+        "selectedResource": "pip_Procedures",
+        "selectedResourceType": "pipeline"
+    }
+}

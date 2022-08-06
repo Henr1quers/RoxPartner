@@ -1,0 +1,6 @@
+selected resource name:		pip_Procedures
+selected resource type:		pipeline
+data factory name:			RoxPartner
+data factory location:		brazilsouth
+subscription id:		df17f436-fa0e-4177-a2d1-8dc9a5d7b399
+time of download (UTC):		Sat, 06 Aug 2022 15:31:47 GMT

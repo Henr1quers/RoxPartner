@@ -1,0 +1,73 @@
+{
+    "name": "AzureSqlPerson",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureSqlDatabase1",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "BusinessEntityID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "PersonType",
+                "type": "text"
+            },
+            {
+                "name": "NameStyle",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "Title",
+                "type": "text"
+            },
+            {
+                "name": "FirstName",
+                "type": "text"
+            },
+            {
+                "name": "MiddleName",
+                "type": "text"
+            },
+            {
+                "name": "LastName",
+                "type": "text"
+            },
+            {
+                "name": "Suffix",
+                "type": "text"
+            },
+            {
+                "name": "EmailPromotion",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "AdditionalContactInfo",
+                "type": "text"
+            },
+            {
+                "name": "Demographics",
+                "type": "text"
+            },
+            {
+                "name": "rowguid",
+                "type": "text"
+            },
+            {
+                "name": "ModifiedDate",
+                "type": "text"
+            }
+        ],
+        "typeProperties": {
+            "schema": "Person",
+            "table": "StagePerson"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

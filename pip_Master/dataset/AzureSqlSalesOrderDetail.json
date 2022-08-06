@@ -1,0 +1,68 @@
+{
+    "name": "AzureSqlSalesOrderDetail",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureSqlDatabase1",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "SalesOrderID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "SalesOrderDetailID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "CarrierTrackingNumber",
+                "type": "text"
+            },
+            {
+                "name": "OrderQty",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "ProductID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "SpecialOfferID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "UnitPrice",
+                "type": "text"
+            },
+            {
+                "name": "UnitPriceDiscount",
+                "type": "text"
+            },
+            {
+                "name": "LineTotal",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "rowguid",
+                "type": "text"
+            },
+            {
+                "name": "ModifiedDate",
+                "type": "text"
+            }
+        ],
+        "typeProperties": {
+            "schema": "Sales",
+            "table": "StageSalesorderdetail"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

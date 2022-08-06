@@ -1,0 +1,124 @@
+{
+    "name": "AzureSqlProduct",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureSqlDatabase1",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "ProductID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "Name",
+                "type": "text"
+            },
+            {
+                "name": "ProductNumber",
+                "type": "text"
+            },
+            {
+                "name": "MakeFlag",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "FinishedGoodsFlag",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "Color",
+                "type": "text"
+            },
+            {
+                "name": "SafetyStockLevel",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "ReorderPoint",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "StandardCost",
+                "type": "text"
+            },
+            {
+                "name": "ListPrice",
+                "type": "text"
+            },
+            {
+                "name": "Size",
+                "type": "text"
+            },
+            {
+                "name": "SizeUnitMeasureCode",
+                "type": "text"
+            },
+            {
+                "name": "WeightUnitMeasureCode",
+                "type": "text"
+            },
+            {
+                "name": "Weight",
+                "type": "text"
+            },
+            {
+                "name": "DaysToManufacture",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "ProductLine",
+                "type": "text"
+            },
+            {
+                "name": "Class",
+                "type": "text"
+            },
+            {
+                "name": "Style",
+                "type": "text"
+            },
+            {
+                "name": "ProductSubcategoryID",
+                "type": "text"
+            },
+            {
+                "name": "ProductModelID",
+                "type": "text"
+            },
+            {
+                "name": "SellStartDate",
+                "type": "text"
+            },
+            {
+                "name": "SellEndDate",
+                "type": "text"
+            },
+            {
+                "name": "DiscontinuedDate",
+                "type": "text"
+            },
+            {
+                "name": "rowguid",
+                "type": "text"
+            },
+            {
+                "name": "ModifiedDate",
+                "type": "text"
+            }
+        ],
+        "typeProperties": {
+            "schema": "Production",
+            "table": "StageProduct"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

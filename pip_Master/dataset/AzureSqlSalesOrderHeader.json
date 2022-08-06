@@ -1,0 +1,133 @@
+{
+    "name": "AzureSqlSalesOrderHeader",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureSqlDatabase1",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "SalesOrderID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "RevisionNumber",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "OrderDate",
+                "type": "text"
+            },
+            {
+                "name": "DueDate",
+                "type": "text"
+            },
+            {
+                "name": "ShipDate",
+                "type": "text"
+            },
+            {
+                "name": "Status",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "OnlineOrderFlag",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "SalesOrderNumber",
+                "type": "text"
+            },
+            {
+                "name": "PurchaseOrderNumber",
+                "type": "text"
+            },
+            {
+                "name": "AccountNumber",
+                "type": "text"
+            },
+            {
+                "name": "CustomerID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "SalesPersonID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "TerritoryID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "BillToAddressID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "ShipToAddressID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "ShipMethodID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "CreditCardID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "CreditCardApprovalCode",
+                "type": "text"
+            },
+            {
+                "name": "CurrencyRateID",
+                "type": "text"
+            },
+            {
+                "name": "SubTotal",
+                "type": "text"
+            },
+            {
+                "name": "TaxAmt",
+                "type": "text"
+            },
+            {
+                "name": "Freight",
+                "type": "text"
+            },
+            {
+                "name": "TotalDue",
+                "type": "text"
+            },
+            {
+                "name": "Comment",
+                "type": "text"
+            },
+            {
+                "name": "rowguid",
+                "type": "text"
+            },
+            {
+                "name": "ModifiedDate",
+                "type": "text"
+            }
+        ],
+        "typeProperties": {
+            "schema": "Sales",
+            "table": "StageSalesOrderHeader"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,36 @@
+{
+    "name": "AzureSqlSpecialOfferProduct",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "AzureSqlDatabase1",
+            "type": "LinkedServiceReference"
+        },
+        "annotations": [],
+        "type": "AzureSqlTable",
+        "schema": [
+            {
+                "name": "SpecialOfferID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "ProductID",
+                "type": "int",
+                "precision": 10
+            },
+            {
+                "name": "rowguid",
+                "type": "text"
+            },
+            {
+                "name": "ModifiedDate",
+                "type": "text"
+            }
+        ],
+        "typeProperties": {
+            "schema": "Sales",
+            "table": "StageSpecialofferproduct"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
