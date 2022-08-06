@@ -378,11 +378,9 @@ SELECT DaysManufacture, name, qtd
                   AS b,
                p.Name              AS name,
                SUM (d.OrderQty)    AS qtd
-          FROM Sales.salesorderdetail AS   d,
-  Sales.specialofferproduct as o,
-  Production.product as P
-WHERE p.ProductID = o.ProductID
-and o.ProductID = d.ProductID
+          FROM Sales.salesorderdetail AS   d
+  INNER JOIN Sales.specialofferproduct as o ON o.ProductID = d.ProductID 
+  INNER JOIN Production.product as P ON p.ProductID = o.ProductID
 GROUP BY name,p.DaysToManufacture) as c
 WHERE b <= 3;
 ~~~~
@@ -393,26 +391,24 @@ WHERE b <= 3;
 SELECT c.CustomerID                          AS CustomerID,
        CONCAT (p.FirstName, ' ', p.LastName) AS Name,
        COUNT (*)                             AS qtdPedidos
-  FROM Sales.SalesOrderHeader AS   h,Sales.Customer as c,Person.Person as p
-where h.CustomerID = c.CustomerID
-and c.PersonID = p.BusinessEntityID
+  FROM Sales.SalesOrderHeader AS   h
+  INNER JOIN Sales.Customer as c ON h.CustomerID = c.CustomerID
+  INNER JOIN Person.Person as p ON c.PersonID = p.BusinessEntityID
 GROUP BY c.PersonID,c.CustomerID,p.FirstName,p.LastName
 ~~~~
 
 <p>4 - Escreva uma query usando as tabelas Sales.SalesOrderHeader, Sales.SalesOrderDetail e Production.Product, de forma a obter a soma total de produtos (OrderQty) por ProductID e OrderDate.</p>
 
 ~~~~
-SELECT DISTINCT
-       d.ProductID                                    AS id,
-       p.Name                                         AS name,
-       SUM (OrderQty) OVER (PARTITION BY d.ProductID) AS qtd_id,
-       h.OrderDate,
-       SUM (OrderQty) OVER (PARTITION BY h.OrderDate) AS qtd_OrderDate
-  FROM Sales.SalesOrderHeader AS   h, Sales.SalesOrderDetail AS d, Production.Product AS p
-WHERE d.SalesOrderID  = h.SalesOrderID
-AND d.ProductID = p.ProductID
-GROUP BY d.ProductID, h.OrderDate,p.Name,OrderQty
-ORDER BY  h.OrderDate
+SELECT p.ProductID, 
+	   OrderDate,
+	   sum(OrderQty) qtd
+  FROM Sales.SalesOrderHeader AS   h 
+  INNER JOIN Sales.SalesOrderDetail AS d ON d.SalesOrderID  = h.SalesOrderID
+  INNER JOIN Production.Product AS p ON d.SalesOrderID  = h.SalesOrderID
+WHERE d.ProductID = p.ProductID
+GROUP BY p.ProductID, OrderDate
+ORDER BY p.ProductID
 ~~~~
 
 <p>5 - Escreva uma query mostrando os campos SalesOrderID, OrderDate e TotalDue da tabela Sales.SalesOrderHeader. Obtenha apenas as linhas onde a ordem tenha sido feita durante o mês de setembro/2011 e o total devido esteja acima de 1.000. Ordene pelo total devido decrescente.</p>
