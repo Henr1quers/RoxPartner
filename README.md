@@ -13,6 +13,8 @@
 
 ![image](https://user-images.githubusercontent.com/92615548/183257472-2a9fff50-8c15-4051-a0ea-c2d7d2acab79.png)
 
+<h2> Resolução </h2>
+
 <p>Para e resolução desse projeto foi escolhido a plataforma Microsoft Azure para criar a infraestrutura necessária pelo custo-benefício e por oferecem no primeiro cadastro realizado uma quantia para utilizar dentro da plataforma. Foi utilizado no projeto o Banco de dados SQL utilizando a camada de preço (Uso Geral - Sem servidor: Gen5, 1 vCore) , que atende perfeitamente a necessidade para o projeto. </p>
 
 ![image](https://user-images.githubusercontent.com/92615548/183257381-1b5cc99c-b3f6-4f2b-8d5d-81fb2625d0ae.png)
