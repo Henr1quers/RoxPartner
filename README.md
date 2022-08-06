@@ -351,17 +351,62 @@ END
 
 <h2>Análise  de dados </h2>
 
-Com base na solução implantada responda aos seguintes questionamentos:
-1.	Escreva uma query que retorna a quantidade de linhas na tabela Sales.SalesOrderDetail pelo campo SalesOrderID, desde que tenham pelo menos três linhas de detalhes.
-
-2.	Escreva uma query que ligue as tabelas Sales.SalesOrderDetail, Sales.SpecialOfferProduct e Production.Product e retorne os 3 produtos (Name) mais vendidos (pela soma de OrderQty), agrupados pelo número de dias para manufatura (DaysToManufacture).
-
-
-3.	Escreva uma query ligando as tabelas Person.Person, Sales.Customer e Sales.SalesOrderHeader de forma a obter uma lista de nomes de clientes e uma contagem de pedidos efetuados.
-
-4.	Escreva uma query usando as tabelas Sales.SalesOrderHeader, Sales.SalesOrderDetail e Production.Product, de forma a obter a soma total de produtos (OrderQty) por ProductID e OrderDate.
-
-
-5.	Escreva uma query mostrando os campos SalesOrderID, OrderDate e TotalDue da tabela Sales.SalesOrderHeader. Obtenha apenas as linhas onde a ordem tenha sido feita durante o mês de setembro/2011 e o total devido esteja acima de 1.000. Ordene pelo total devido decrescente.
+<p>Com base na solução implantada responda aos seguintes questionamentos:</p>
+<p>1. Escreva uma query que retorna a quantidade de linhas na tabela Sales.SalesOrderDetail pelo campo SalesOrderID, desde que tenham pelo menos três linhas de detalhes.</p>
+~~~~
+SELECT SalesOrderID, COUNT (*) AS qtd
+    FROM Sales.salesorderdetail
+GROUP BY SalesOrderID
+  HAVING COUNT (*) >= 3
+~~~~
+<p>2. Escreva uma query que ligue as tabelas Sales.SalesOrderDetail, Sales.SpecialOfferProduct e Production.Product e retorne os 3 produtos (Name) mais vendidos (pela soma de OrderQty), agrupados pelo número de dias para manufatura (DaysToManufacture).</p>
+~~~~
+SELECT DaysManufacture, name, qtd
+  FROM (SELECT p.DaysToManufacture AS DaysManufacture,
+               ROW_NUMBER ()
+               OVER (PARTITION BY p.DaysToManufacture
+                     ORDER BY SUM (d.OrderQty) DESC)
+                  AS b,
+               p.Name              AS name,
+               SUM (d.OrderQty)    AS qtd
+          FROM Sales.salesorderdetail AS   d,
+  Sales.specialofferproduct as o,
+  Production.product as P
+WHERE p.ProductID = o.ProductID
+and o.ProductID = d.ProductID
+GROUP BY name,p.DaysToManufacture) as c
+WHERE b <= 3;
+~~~~
+<p>3. Escreva uma query ligando as tabelas Person.Person, Sales.Customer e Sales.SalesOrderHeader de forma a obter uma lista de nomes de clientes e uma contagem de pedidos efetuados.</p>
+~~~~
+SELECT c.CustomerID                          AS CustomerID,
+       CONCAT (p.FirstName, ' ', p.LastName) AS Name,
+       COUNT (*)                             AS qtdPedidos
+  FROM Sales.SalesOrderHeader AS   h,Sales.Customer as c,Person.Person as p
+where h.CustomerID = c.CustomerID
+and c.PersonID = p.BusinessEntityID
+GROUP BY c.PersonID,c.CustomerID,p.FirstName,p.LastName
+~~~~
+<p>4. Escreva uma query usando as tabelas Sales.SalesOrderHeader, Sales.SalesOrderDetail e Production.Product, de forma a obter a soma total de produtos (OrderQty) por ProductID e OrderDate.</p>
+~~~~
+SELECT DISTINCT
+       d.ProductID                                    AS id,
+       p.Name                                         AS name,
+       SUM (OrderQty) OVER (PARTITION BY d.ProductID) AS qtd_id,
+       h.OrderDate,
+       SUM (OrderQty) OVER (PARTITION BY h.OrderDate) AS qtd_OrderDate
+  FROM Sales.SalesOrderHeader AS   h, Sales.SalesOrderDetail AS d, Production.Product AS p
+WHERE d.SalesOrderID  = h.SalesOrderID
+AND d.ProductID = p.ProductID
+GROUP BY d.ProductID, h.OrderDate,p.Name,OrderQty
+ORDER BY  h.OrderDate
+~~~~
+<p>5. Escreva uma query mostrando os campos SalesOrderID, OrderDate e TotalDue da tabela Sales.SalesOrderHeader. Obtenha apenas as linhas onde a ordem tenha sido feita durante o mês de setembro/2011 e o total devido esteja acima de 1.000. Ordene pelo total devido decrescente.</p>
+~~~~
+  SELECT SalesOrderID, OrderDate, TotalDue
+    FROM Sales.SalesOrderHeader
+   WHERE OrderDate BETWEEN '2011-09-01' AND '2011-09-30' AND TotalDue > 1000
+ORDER BY OrderDate
+~~~~
 
 
