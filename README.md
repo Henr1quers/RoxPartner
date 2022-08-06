@@ -192,6 +192,10 @@ CONSTRAINT FK_SalesOrderDetail_SpecialOfferProduct_SpecialOfferIDProductID FOREI
 )
 ~~~~
 
+<h3>Diagrama de dados após criação das tabelas </h3>
+
+![image](https://user-images.githubusercontent.com/92615548/183262140-da0a1c5d-412a-42c3-9ca4-77f507a4abdd.png)
+
 <p>Para o armazenamento dos arquivos CSV foi utilizado Azure Blob Storage. Para fazer a importação dos dados para as tabelas foram criadas tarefas de pipeline, para que copiasse os dados dos arquivos e importasse para tabelas temporárias com os seguintes nomes: </p>
 
 <ul>
