@@ -9,7 +9,7 @@
    <li>Criar um relatório em qualquer ferramenta de visualização de dados. (OPCIONAL) </li>
 </ul>
 
-<h2> Modelo Fisio </h2>
+<h2> Modelo Lógico </h2>
 
 ![image](https://user-images.githubusercontent.com/92615548/183257472-2a9fff50-8c15-4051-a0ea-c2d7d2acab79.png)
 
